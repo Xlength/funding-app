@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <h1>Login</h1>
+            {% if messages %}
+                <div class="alert alert-danger" role="alert">
+                    {% for message in messages %}
+                        <p style="text-align: center;">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="input-box">
+                <i class="fas fa-user icon"></i>
+                {{ form.username }}
+                <label for="id_username">Username</label>
+            </div>
+            <div class="input-box">
+                <i class="fas fa-lock icon"></i>
+                {{ form.password }}
+                <label for="id_password">Password</label>
+            </div>
+            <div class="row">
+                <a href="#">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn">Login</button>
+            <div class="signup-link">
+                <p>Don't have an account? <a href="{% url 'register' %}">Create one.</a></p>
+            </div>
+        </form>
+    </div>
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+</html>

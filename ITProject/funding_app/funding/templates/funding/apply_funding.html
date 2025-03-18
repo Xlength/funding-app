@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funding Application</title>
+    
+    <!-- Bootstrap 核心样式 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --dark-bg: #1e1e2e;
+            --dark-surface: #2e2e3e;
+            --dark-border: #444;
+        }
+
+        body {
+            background: #f8fafc;
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 现代化导航栏 */
+        .navbar {
+            background: rgba(30, 41, 59, 0.95);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* 申请表单卡片 */
+        .application-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            padding: 2rem;
+            margin: 2rem 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* 表单输入优化 */
+        .form-control {
+            padding: 0.875rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* 提交按钮增强 */
+        .btn-primary {
+            background: var(--primary);
+            padding: 0.875rem 1.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s ease, background 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.03);
+            background: #2563eb;
+        }
+
+        /* 未登录状态提示 */
+        .auth-prompt {
+            background: rgba(255,255,255,0.95);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* 淡入动画 */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'index' %}">FundFlow</a>
+            <div class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="container my-5 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="application-card">
+                    <h2 class="text-center mb-4 fw-bold">New Funding Request</h2>
+
+                    {% if user.is_authenticated %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                {{ form.as_p }}
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                Submit Proposal
+                            </button>
+                        </form>
+                    {% else %}
+                        <div class="auth-prompt">
+                            <p class="lead mb-3">Sign in to submit funding requests</p>
+                            <a href="{% url 'login' %}" class="btn btn-primary">
+                                Access Platform
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="bg-white py-3 mt-auto">
+        <div class="container text-center text-muted">
+            <p class="mb-0">&copy; 2025 Funding App</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

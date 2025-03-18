@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <!-- Bootstrap 核心样式 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f8fafc;
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(30, 41, 59, 0.95);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-container {
+            padding: 2rem;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card p {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2563eb;
+        }
+
+        .table-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s ease, background 0.3s;
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            transform: scale(1.03);
+        }
+
+        .btn-secondary {
+            background: #64748b;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'index' %}">FundFlow</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard 内容 -->
+    <div class="container dashboard-container">
+        <h2 class="text-center fw-bold mb-4">Welcome, {{ user.username }}!</h2>
+
+        <!-- 统计数据 -->
+        <div class="row text-center">
+            <div class="col-md-3 mb-3">
+                <div class="summary-card">
+                    <h3>Total Applications</h3>
+                    <p>{{ total_applications }}</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="summary-card">
+                    <h3>Approved</h3>
+                    <p>{{ approved_count }}</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="summary-card">
+                    <h3>Rejected</h3>
+                    <p>{{ rejected_count }}</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="summary-card">
+                    <h3>Pending</h3>
+                    <p>{{ pending_count }}</p>
+                </div>
+            </div>
+        </div>
+
+<!-- 用户申请列表 -->
+<div class="table-container mt-4">
+    <h3 class="fw-bold mb-3">Your Applications</h3>
+
+    {% if applications %}
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for application in applications %}
+                        <tr>
+                            <td>{{ application.title }}</td>
+                            <td>${{ application.amount }}</td>
+                            <td>{{ application.status }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-muted">You have no applications yet.</p>
+    {% endif %}
+</div>
+
+                  

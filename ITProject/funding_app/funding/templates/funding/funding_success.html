@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Submitted | FundFlow</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --success: #10b981;
+            --surface: #ffffff;
+            --background: #f8fafc;
+            --text-primary: #1e293b;
+        }
+
+        body {
+            background: var(--background);
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 2rem;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .success-card {
+            background: var(--surface);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            padding: 3rem;
+            max-width: 600px;
+            margin: 2rem 0;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--success);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        h2::before {
+            content: "✓";
+            font-size: 1.8em;
+            color: var(--success);
+        }
+
+        p {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .action-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 0.875rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            border: 2px solid transparent;
+        }
+
+        .primary-btn {
+            background: var(--primary);
+            color: white !important;
+        }
+
+        .secondary-btn {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .success-card {
+                padding: 2rem;
+                border-radius: 1rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-card">
+        <h2>Application Submitted!</h2>
+        <p>Your funding request has been successfully received. Our team will review your application and respond within 3-5 business days.</p>
+        
+        <div class="action-links">
+            <a href="{% url 'apply_funding' %}" class="action-btn primary-btn">
+                ✨ Submit Another
+            </a>
+            <a href="{% url 'view_applications' %}" class="action-btn secondary-btn">
+                📋 View Applications
+            </a>
+        </div>
+    </div>
+</body>
+</html>

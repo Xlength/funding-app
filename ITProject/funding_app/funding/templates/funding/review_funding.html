@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Funding Applications</title>
+
+    <!-- Bootstrap 核心样式 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f8fafc;
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(30, 41, 59, 0.95);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            padding-top: 2rem;
+        }
+
+        .review-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .btn-primary {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s ease, background 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+
+        .table-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">FundFlow</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <div class="container">
+        <h2 class="text-center fw-bold mb-4">Pending Funding Applications</h2>
+
+        {% if applications %}
+            <!-- 统计卡片 -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6">
+                    <div class="review-card">
+                        <h3>Total Pending Applications</h3>
+                        <p class="fs-4 fw-bold">{{ applications|length }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 表格 -->
+            <div class="table-container">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Title</th>
+                                <th>Amount</th>
+                                <th>User</th>
+                                <th>Submitted At</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for application in applications %}
+                            <tr>
+                                <td>{{ application.title }}</td>
+                                <td>${{ application.amount }}</td>
+                                <td>{{ application.user.username }}</td>
+                                <td>{{ application.submitted_at }}</td>
+                                <td>
+                                    <a href="{% url 'approve_or_reject' application.id %}" class="btn btn-primary">Review</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        {% else %}
+            <p class="text-center text-muted">No pending applications.</p>
+        {% endif %}
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-white py-3 mt-auto">
+        <div class="container text-center text-muted">
+            <p class="mb-0">&copy; 2025 FundFlow</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

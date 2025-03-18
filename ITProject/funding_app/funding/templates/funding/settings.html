@@ -1,0 +1,234 @@
+{% block title %}{% endblock %}
+{% block content %}
+
+<style>
+    /* 🎨 颜色方案 */
+    :root {
+        --primary: #6366f1;
+        --primary-hover: #4f46e5;
+        --danger: #ef4444;
+        --danger-hover: #dc2626;
+        --background: #0f172a;
+        --surface: #1e293b;
+        --text: #f8fafc;
+        --border: #334155;
+    }
+
+    body {
+        background: var(--background);
+        color: var(--text);
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 640px;
+        padding: 2rem;
+        background: var(--surface);
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        margin: 2rem;
+        position: relative;
+    }
+
+    /* 🌟 唯一标题样式 */
+    .user-settings-header {
+        font-size: 1.8rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        padding-bottom: 1rem;
+    }
+    .user-settings-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: var(--primary);
+        border-radius: 2px;
+    }
+
+    /* 🌀 卡片设计 */
+    .card {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border);
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    }
+
+    .card h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0 0 1.5rem 0;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .card h4::before {
+        content: '';
+        display: block;
+        width: 6px;
+        height: 1.2rem;
+        background: var(--primary);
+        border-radius: 2px;
+    }
+
+    /* 📝 表单元素 */
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        color: #94a3b8;
+        font-weight: 500;
+    }
+
+    input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        color: var(--text);
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+    }
+    input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        outline: none;
+    }
+
+    /* 🎯 按钮样式 */
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-primary {
+        background: var(--primary);
+        color: white;
+    }
+    .btn-primary:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+    }
+    .btn-danger {
+        background: var(--danger);
+        color: white;
+    }
+    .btn-danger:hover {
+        background: var(--danger-hover);
+        transform: translateY(-1px);
+    }
+    .btn-secondary {
+        background: none;
+        border: 1px solid var(--border);
+        color: #94a3b8;
+    }
+    .btn-secondary:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+
+    /* 💫 动画效果 */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+        animation: fadeIn 0.4s ease forwards;
+    }
+
+    /* 📱 响应式优化 */
+    @media (max-width: 480px) {
+        .container {
+            padding: 1.5rem;
+            margin: 1rem;
+        }
+        .card {
+            padding: 1rem;
+        }
+    }
+</style>
+
+<div class="container fade-in">
+    <!-- 唯一标题 -->
+    <div class="user-settings-header">Account Settings</div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card">
+        <h4>Email Settings</h4>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Email Address</label>
+                {{ user_form.email }}
+            </div>
+            <button type="submit" name="update_info" class="btn btn-primary">
+                Update Email
+            </button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h4>Password Settings</h4>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Current Password</label>
+                {{ password_form.old_password }}
+            </div>
+            <div class="form-group">
+                <label>New Password</label>
+                {{ password_form.new_password1 }}
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                {{ password_form.new_password2 }}
+            </div>
+            <button type="submit" name="change_password" class="btn btn-danger">
+                Change Password
+            </button>
+        </form>
+    </div>
+
+    <div class="mt-4 text-center">
+        <a href="{% url 'index' %}" class="btn btn-secondary">
+            ← Return to Index
+        </a>
+    </div>
+</div>
+
+{% endblock %}

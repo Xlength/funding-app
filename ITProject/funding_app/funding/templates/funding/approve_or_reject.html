@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Funding Application</title>
+    
+    <!-- Bootstrap 核心样式 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --dark-bg: #1e1e2e;
+            --dark-surface: #2e2e3e;
+            --dark-border: #444;
+        }
+
+        body {
+            background: #f8fafc;
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(30, 41, 59, 0.95);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .review-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            padding: 2rem;
+            margin: 2rem 0;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .btn-success, .btn-danger {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s ease, background 0.3s;
+        }
+
+        .btn-success:hover, .btn-danger:hover {
+            transform: scale(1.05);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--primary);
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">FundFlow</a>
+            <div class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    <a class="nav-link" href="#">Dashboard</a>
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+
+    <main class="container my-5 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="review-card">
+                    <h2 class="text-center mb-4 fw-bold">Review Funding Application</h2>
+
+                    <div class="mb-4">
+                        <p><strong>Title:</strong> {{ application.title }}</p>
+                        <p><strong>Amount:</strong> ${{ application.amount }}</p>
+                        <p><strong>Submitted by:</strong> {{ application.user.username }}</p>
+                        <p><strong>Description:</strong> {{ application.description }}</p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            {{ form.as_p }}
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" name="approve" class="btn btn-success w-45">Approve</button>
+                            <button type="submit" name="reject" class="btn btn-danger w-45">Reject</button>
+                        </div>
+                    </form>
+
+                    <a href="{% url 'review_funding' %}" class="back-link">⬅ Back to Review List</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <footer class="bg-white py-3 mt-auto">
+        <div class="container text-center text-muted">
+            <p class="mb-0">&copy; 2025 FundFlow</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
