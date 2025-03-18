@@ -90,3 +90,5 @@ LOGIN_REDIRECT_URL = '/'  # 确保登录后跳转到主页
 LOGOUT_REDIRECT_URL = '/'  # 确保登出后跳转到主页
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+ALLOWED_HOSTS = ['*']
